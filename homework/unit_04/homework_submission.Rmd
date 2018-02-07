@@ -8,14 +8,12 @@ output: html_document
 ```{r setup, include=FALSE, echo=TRUE}
 ```
 1. FiveThirtyEight Data
-`
     - Read [GitHub Repo](https://github.com/rudeboybert/fivethirtyeight)
     - Install Library:
         - install.packages("fivethirtyeight")
     - Assign 18th dataset to Object: df
     - Use a more detailed list of the data sets to write out the URL in a comment to the related news story.
     - Using R command(s), give the dimensions and column names of this data frame
-`
 ```{r}
 library(fivethirtyeight)
 # To see a list of all data sets:
