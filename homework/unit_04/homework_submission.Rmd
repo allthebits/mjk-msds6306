@@ -1,0 +1,55 @@
+---
+title: "Assignment 4"
+author: "MJKelleher"
+date: "February 04, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE, echo=TRUE}
+```
+1. FiveThirtyEight Data
+`
+    - Read [GitHub Repo](https://github.com/rudeboybert/fivethirtyeight)
+    - Install Library:
+        - install.packages("fivethirtyeight")
+    - Assign 18th dataset to Object: df
+    - Use a more detailed list of the data sets to write out the URL in a comment to the related news story.
+    - Using R command(s), give the dimensions and column names of this data frame
+`
+```{r}
+library(fivethirtyeight)
+# To see a list of all data sets:
+five38 <- data(package = "fivethirtyeight", verbose=TRUE)
+items <- five38$results[,"Item"]
+eighteenthName <- items[18]
+eighteenth <- get(data(list=eighteenthName, package = "fivethirtyeight"))
+df <- eighteenth
+dataframeInfo <- function(dataframe){
+    allnames <- "Column Names: "
+    for (name in names(dataframe)) {
+        allnames <- paste(allnames, name, sep="  ")
+    }
+    allnames <- cat(allnames, "\n")
+    tmp <- sprintf("Dimensions: Rows = %d, Columns = %d", nrow(dataframe), ncol(dataframe))
+    allnames <- cat(allnames, tmp, "\n")
+}
+
+dataframeInfo(df)
+```
+1. More R Commands
+```{r}
+names(df)
+ncol(df)
+
+t <- table(df$major_category)
+major_count <- data.frame(t[1:length(t)])
+names(major_count) <- c("major_category", "count")
+par(las=2)
+barplot(major_count$count, beside = TRUE, xlim = c(0, 35), horiz=TRUE)
+
+filename <- paste0(eighteenthName, ".csv")
+write.csv(df, file = filename, row.names=FALSE)
+```
+1. Codebook
+- [MJKelleher's GitHub Class Repository](https://github.com/allthebits/mjk-msds6306)
+1. Swirl Modules 15
