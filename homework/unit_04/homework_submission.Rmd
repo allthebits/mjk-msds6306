@@ -34,7 +34,7 @@ dataframeInfo <- function(dataframe){
 
 dataframeInfo(df)
 ```
-1. More R Commands
+2. More R Commands
 ```{r}
 names(df)
 ncol(df)
@@ -48,6 +48,6 @@ barplot(major_count$count, beside = TRUE, xlim = c(0, 35), horiz=TRUE)
 filename <- paste0(eighteenthName, ".csv")
 write.csv(df, file = filename, row.names=FALSE)
 ```
-1. Codebook
+3. Codebook
 - [MJKelleher's GitHub Class Repository](https://github.com/allthebits/mjk-msds6306)
-1. Swirl Modules 15
+4. Swirl Modules 15
