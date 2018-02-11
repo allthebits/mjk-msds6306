@@ -1,0 +1,120 @@
+---
+title: "Assignment 5"
+author: "MJKelleher"
+date: "February 11, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE, echo=TRUE}
+    # Clean the workspace, remove all existing Objects
+    rm(list=ls())
+```
+1. GitHub Cloning
+    + (a.) Import 2016 and assign column names
+    ```{r}
+    dbxroot <- "https://dl.dropboxusercontent.com/spa/afq05cp80hp4ezn/downloads/public/msds-data/";
+    yob2016_url <- paste(dbxroot, "yob2016.txt", sep="");
+    df <- read.csv(url(yob2016_url), stringsAsFactors=FALSE, sep=";", header=FALSE);
+    names(df) <- c("FirstName", "Gender", "CountWithThisName")
+    ```
+    + (b.) Summary and structure of data
+    ```{r}
+    head(df)
+    str(df)
+    ```
+    + (c.) Find name that ends with 3 y's
+    ```{r}
+    library(stringi)
+
+    getReversedStartsWith <- function(val, regex){
+        newval <- stringi::stri_reverse(val)
+        newval <- grep(regex, newval, value = TRUE)
+    }
+    
+    # Reverse all of the firstNames that match the regex, NA or empty String returned with no match
+    reversed_y <- lapply(df$FirstName, function(x){ getReversedStartsWith(x, "^yyy") })
+    # Remove all of the elements that are empty
+    reversed_y <- reversed_y[lapply(reversed_y,length)>0]
+    # Reverse the Strings back to the original spelling
+    reversed_y <- lapply(reversed_y,stringi::stri_reverse)
+    reversed_y
+    ```
+    + (c.) Remove this observation, save as new dataframe
+    ```{r}
+    # Find the row index of the name we found
+    ndx <- which(df$FirstName == reversed_y[1], arr.ind=TRUE)
+    sprintf("Found name %s at row index %d", df[ndx[1],]$FirstName, ndx[1])
+
+    # Remove the row of the name we found
+    y2016 <- df[-c(ndx[1]),]
+    sprintf("Rows in original dataset: %d,  Rows in dataset with name removed: %d", nrow(df), nrow(y2016))
+
+    # Make sure this name does not exist in the new dataset
+    crosscheck <- lapply(y2016$FirstName, function(x){ getReversedStartsWith(x, "^yyy") })
+    crosscheck <- crosscheck[lapply(crosscheck,length)>0]
+    sprintf("Crosscheck of removing name %s, size of found is: %d", df[ndx[1],]$FirstName, length(crosscheck))
+    ```
+1. Data Merging
+    + (a.) Import 2015 dataset assign column names
+    ```{r}
+    yob2015_url <- paste(dbxroot, "yob2015.txt", sep="");
+    y2015 <- read.csv(url(yob2015_url), stringsAsFactors=FALSE, sep=",", header=FALSE);
+    names(y2015) <- c("FirstName", "Gender", "CountWithThisName")
+    head(y2015)
+    str(y2015)
+    ```
+    + (b1.) Display last 10 rows, describe interesting observation of this data
+    ```{r}
+    tail(y2015, 10)
+    ```
+    + (b2.) Interesting observation about last 10 rows of Data
+        + There are exactly 5 children with these names, and they all happen to be boys.
+    + (c.) Merge 2016, 2016 on Name, drop All rows resulting in NA for either name count field
+    ```{r}
+    # Merge the 2 datasets, drop observations when there is not a match from either side
+    #      and merge on FirstName and Gender
+    final <- merge(y2016, y2015, all=FALSE, by=c("FirstName","Gender"))
+    xcnt <- sum(is.na(final$CountWithThisName.x))
+    ycnt <- sum(is.na(final$CountWithThisName.y))
+    sprintf("Validation after merge: Count of NA for 2016: %d, Count of NA for 2015", xcnt, ycnt)
+    ```
+1. Data Summary
+    + (a.) New field summing count from 2016 and 2016 called Total, grand sum of Total
+    ```{r}
+    # Re-calculate the count field
+    final$Total <- final$CountWithThisName.x + final$CountWithThisName.y
+    # Uncomment if you want to drop the ".x" and ".y" synthetic fields
+    #final <- final[,c("FirstName","Gender","CountWithThisName")]
+    str(final)
+    grandTotal <- sum(final$Total)
+    sprintf("Total number of children given popular names: %d", grandTotal)
+    ```
+    + (b.) Sort by Total, top 10 popular names
+    ```{r}
+    # Sort by the 'Total' Field
+    final <- final[with(final, order(Total, decreasing=TRUE)), ]
+    head(final,10)
+    ```
+    + (c.) Omit boys, report top 10 popular Girl names
+    ```{r}
+    # Select Observations by Gender, then get the Top 10
+    top10girls <- head(final[which(final$Gender == "F"),],10)
+    top10girls$FirstName
+    ```
+    + (d.) Drop all columns except FirstName, Total, write to CSV
+    ```{r}
+    # Remove all columns except FirstName and Total
+    top10girls <- top10girls[, names(top10girls) %in% c("FirstName", "Total")]
+    top10girls
+
+    # Save the data to a CSV
+    filename <- "top10-girl-names-2015-2016.csv"
+    write.csv(df, file = filename, row.names=TRUE)
+
+    # List files in the current directory matching the given pattern
+    list.files(pattern=".*.csv$")
+    ```
+1. [Upload to GitHub](https://github.com/allthebits/mjk-msds6306)
+    + Files for this homework (Unit 5) are in this folder: **homework/unit_05**
+    + [RMD File](https://github.com/allthebits/mjk-msds6306/blob/master/homework/unit_05/homework_submission.Rmd)
+    + [Codebook](https://github.com/allthebits/mjk-msds6306/blob/master/homework/unit_05/Codebook.md)
