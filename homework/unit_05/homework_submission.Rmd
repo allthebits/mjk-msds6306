@@ -117,4 +117,4 @@ output: html_document
 1. [Upload to GitHub](https://github.com/allthebits/mjk-msds6306)
     + Files for this homework (Unit 5) are in this folder: **homework/unit_05**
     + [RMD File](https://github.com/allthebits/mjk-msds6306/blob/master/homework/unit_05/homework_submission.Rmd)
-    + [Codebook](https://github.com/allthebits/mjk-msds6306/blob/master/homework/unit_05/Codebook.md)
+    + [Codebook](https://github.com/allthebits/mjk-msds6306/blob/master/homework/unit_05/codebook.md)
