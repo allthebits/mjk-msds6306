@@ -9,7 +9,7 @@ output: html_document
     # Clean the workspace, remove all existing Objects
     rm(list=ls())
 ```
-1. GitHub Cloning
+1. Data Munging
     + (a.) Import 2016 and assign column names
     ```{r}
     dbxroot <- "https://dl.dropboxusercontent.com/spa/afq05cp80hp4ezn/downloads/public/msds-data/";
