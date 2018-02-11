@@ -1,6 +1,7 @@
 # Popular baby names foor 2015, 2016
 1. Raw Data
     + [2016 Dataset](https://dl.dropboxusercontent.com/spa/afq05cp80hp4ezn/downloads/public/msds-data/yob2016.txt)
+        + Variable Names
             + FirstName : String
             + Gender    : Character {'M', 'F' }
             + CountWithThisName : integer
