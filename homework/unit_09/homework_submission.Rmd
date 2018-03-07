@@ -96,3 +96,5 @@ head(castdf,n=10)
 ## [Upload to GitHub](https://github.com/allthebits/mjk-msds6306)
 - Files for this homework (Unit 5) are in this folder: **homework/unit_09**
 - [RMD File](https://github.com/allthebits/mjk-msds6306/blob/master/homework/unit_09/homework_submission.Rmd)
+- [HTML Version of Assignment 9](http://htmlpreview.github.io/?https://raw.githubusercontent.com/allthebits/mjk-msds6306/master/homework/unit_09/homework_submission.html)  -  It's the same exact content as this page, except served from GitHub
+
