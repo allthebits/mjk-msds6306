@@ -1,0 +1,98 @@
+---
+title: "Assignment 9"
+author: "MJKelleher"
+date: "March 04, 2018"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE, echo=TRUE}
+# Clean the workspace, remove all existing Objects
+rm(list=ls())
+library(knitr)
+library(XML)
+library(ggplot2)
+```
+```{r, results='hide', message=FALSE, warning=FALSE, echo=FALSE}
+#
+# This imports the R scripts, but does not execute them yet.
+# They are executed later in the next code chunk
+read_chunk('scrape.r')
+read_chunk('clean_table.r')
+read_chunk('plot.r')
+
+```
+
+
+## Harry Potter Cast
+### (a.) [View the cast members for the movies, understand the structure of the HTMl/XML](http://www.imdb.com/title/tt1201607/fullcredits?ref_=tt_ql_1)
+### (b.) Scrape the page, collecting all of the cast.
+```{r}
+url <- "http://www.imdb.com/title/tt1201607/fullcredits?ref_=tt_ql_1"
+#
+# If you use TRUE, the URL gets parsed as the actual content, not the contents of the URL#
+html <- htmlParse(url, asText=FALSE)
+
+cleanCharacterNames = function(x){
+    clean <- xmlValue(x)
+    clean <- gsub("\\n", " ", clean)
+    clean <- gsub("[[:space:]]+", " ", clean)
+    clean <- trimws(clean)
+    clean
+}
+
+# Collect the Actor names
+xpath <- "//table[@class='cast_list']//span[@itemprop='name']"
+castNames <- xpathSApply(html, xpath, xmlValue)
+
+# Collect the Character Names
+xpath <- "//table[@class='cast_list']//td[@class='character']/div"
+castCharacters <- xpathSApply(html, xpath, cleanCharacterNames)
+
+# Cross Check the sizes of the 2 Vectors BEFORE creating the dataframe
+if (length(castNames) == length(castCharacters)) {
+    castdf <- data.frame(castNames, castCharacters)
+    names(castdf) <- c("Actor", "Character")
+} else {
+    sprintf("Cast vector size is %d, Characters vector size is %d, and they DO NOT match", length(castNames), length(castCharacters))
+}
+```
+### (c.) Clean up the Table
+`
+As a result of the way we collected the data from the HTML table, there are no blank rows, Mr. Warwick's column is correct, and the non-Actor/character row was not collected.
+`
+### (d.) Split the actors name into 2 columns, FirstName and SurName, keeping middle name in the FirstName field.
+```{r}
+FirstName <- sub("^(.*) [^ ]*$", "\\1", castNames,perl=TRUE)
+SurName <- sub("^.* ([^ ]*)$", "\\1", castNames,perl=TRUE)
+
+castdf <- data.frame(FirstName, SurName, castCharacters)
+names(castdf) <- c("FirstName", "SurName", "Character")
+```
+### (e.) Print the first 10 Rows
+```{r}
+head(castdf,n=10)
+```
+
+    
+## SportsBall
+### (a.) Understand the structure of [ESPN San Antonio Spurs player stats page](http://www.espn.com/nba/team/stats/_/name/sa/san-antonio-spurs), and more specifically the Shooting Statistics table.
+### (b.) Scrape the Shooting Statistics table
+```{r}
+<<scrape>>
+```
+### (c.) Clean up the table: one observation per row, no blank rows, the column names or the "Totals" row.  Additionally, split the "PLAYER" column into 2 columns: 1 for name, 1 for position.  Lastly, make sure each column uses the correct data type for its contents, numbers for the stats columns, etc.
+```{r}
+<<clean_table>>
+```
+### (d.) Colorful bar chart that shows the Field Goals Percentage Per Game for each person
+```{r}
+<<plot>>
+```
+
+
+## [Upload to GitHub](https://github.com/allthebits/mjk-msds6306)
+- Files for this homework (Unit 5) are in this folder: **homework/unit_09**
+- [RMD File](https://github.com/allthebits/mjk-msds6306/blob/master/homework/unit_09/homework_submission.Rmd)

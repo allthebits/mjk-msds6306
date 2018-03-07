@@ -1,0 +1,5 @@
+    url <- "http://www.espn.com/nba/team/stats/_/name/sa/san-antonio-spurs"
+    html <- htmlParse(url, asText=FALSE)
+    
+    xpath <- "//table[*//text()='SHOOTING STATISTICS']//tr[contains(@class,'player')]"
+    rows <- getNodeSet(html, xpath)
