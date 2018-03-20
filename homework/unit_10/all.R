@@ -15,4 +15,4 @@
     source('code/q02_a.R')
     source('code/q02_b.R')
     source('code/q02_c.R')
-    
+    source('code/q02_d.R')

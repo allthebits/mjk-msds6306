@@ -30,6 +30,7 @@ read_chunk('code/q01_d.R')
 read_chunk('code/q02_a.R')
 read_chunk('code/q02_b.R')
 read_chunk('code/q02_c.R')
+read_chunk('code/q02_d.R')
 
 ```
 
@@ -65,6 +66,25 @@ read_chunk('code/q02_c.R')
 ```{r}
 <<q02_c>>
 ```
+
+### (d.) GGPlot with VA's per 1000 Square Miles by Region, sorted by Descending Bar Plot
+#### I ran out of time trying to figure out how to do a legend.
+```{r}
+<<q02_d>>
+```
+
+### (e.1) What patterns do you see? 
+#### A large portion of the total hospitals are contained in a few states.
+
+### (e.2) By this metric, is there any region that seems relatively high for VA medical centers per thousand square miles?
+#### The eastern seaboard seems to be high in the count of hospitals.
+
+### (e.3) How about low? 
+#### Total count per thousand is small west of a certain point, with the exception of a couple states.
+
+### (e.4) Given these data, what advice might you give your boss before you start modeling (and why)?
+#### There are some states that seem to be low, and I would double check the aggregate data to make sure the counts are correct.  or possibly make sure responses were not lost, or not reported.  If data is getting dropped, this would bias the model.
+
 
 ## [Upload to GitHub](https://github.com/allthebits/mjk-msds6306)
 - Files for this homework (Unit 10) are in this folder: **homework/unit_10**
