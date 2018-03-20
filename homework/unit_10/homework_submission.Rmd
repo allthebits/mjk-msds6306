@@ -29,6 +29,7 @@ read_chunk('code/q01_c.R')
 read_chunk('code/q01_d.R')
 read_chunk('code/q02_a.R')
 read_chunk('code/q02_b.R')
+read_chunk('code/q02_c.R')
 
 ```
 
@@ -59,6 +60,10 @@ read_chunk('code/q02_b.R')
 ### (b.) Correct the data mismatch between the dataframe in #1c and the statesize dataframe, and merge.
 ```{r}
 <<q02_b>>
+```
+### (c.) Calculate a new variable in your combined data.frame() which indicates the VA hospitals per thousand square miles.
+```{r}
+<<q02_c>>
 ```
 
 ## [Upload to GitHub](https://github.com/allthebits/mjk-msds6306)

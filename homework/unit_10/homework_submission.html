@@ -136,6 +136,7 @@ $(document).ready(function () {
 <li><a href="#cleaning-and-new-features">2) Cleaning and New Features</a><ul>
 <li><a href="#a.">(a.)</a></li>
 <li><a href="#b.-correct-the-data-mismatch-between-the-dataframe-in-1c-and-the-statesize-dataframe-and-merge.">(b.) Correct the data mismatch between the dataframe in #1c and the statesize dataframe, and merge.</a></li>
+<li><a href="#c.-calculate-a-new-variable-in-your-combined-data.frame-which-indicates-the-va-hospitals-per-thousand-square-miles.">(c.) Calculate a new variable in your combined data.frame() which indicates the VA hospitals per thousand square miles.</a></li>
 </ul></li>
 <li><a href="#upload-to-github"><a href="https://github.com/allthebits/mjk-msds6306">Upload to GitHub</a></a></li>
 </ul>
@@ -283,10 +284,26 @@ unique_states &lt;- unique(statesize$STATE)
 
 missing &lt;- filter(mh2015_filtered, !(STATE %in% unique_states))
 
-sprintf(&quot;Here are the states containd in the dataframe from #1c, but not contained in the dataframe statesize&quot;)</code></pre>
-<pre><code>## [1] &quot;Here are the states containd in the dataframe from #1c, but not contained in the dataframe statesize&quot;</code></pre>
+sprintf(&quot;Here are the states contained in the dataframe from #1c, but not contained in the dataframe statesize&quot;)</code></pre>
+<pre><code>## [1] &quot;Here are the states contained in the dataframe from #1c, but not contained in the dataframe statesize&quot;</code></pre>
 <pre class="r"><code>unique(missing$STATE)</code></pre>
 <pre><code>## [1] &quot;DC&quot;</code></pre>
+</div>
+<div id="c.-calculate-a-new-variable-in-your-combined-data.frame-which-indicates-the-va-hospitals-per-thousand-square-miles." class="section level3">
+<h3>(c.) Calculate a new variable in your combined data.frame() which indicates the VA hospitals per thousand square miles.</h3>
+<pre class="r"><code>mh2015_merge$HospitalPer_1k_Miles &lt;- 0.0
+
+statecount &lt;- data.frame(matrix(ncol = 4, nrow = 0))
+colnames(statecount) &lt;- c(&quot;STATE&quot;, &quot;HospitalPer_1k_Miles&quot;, &quot;SqMiles&quot;, &quot;COUNT&quot;)
+
+for (rowcnt in 1:nrow(statesize)) {
+    # Get the count of Hospitals per state
+    totalcount &lt;- length( which( mh2015_merge$STATE == statesize[rowcnt,]$STATE ) )
+    # calculate hospitals per 1000 square miles per state
+    per1k &lt;- (totalcount * 1000) / statesize[rowcnt,]$SqMiles
+    # populate the merge dataframe
+    mh2015_merge$HospitalPer_1k_Miles[mh2015_merge$STATE == statesize[rowcnt,]$STATE] &lt;- per1k
+}</code></pre>
 </div>
 </div>
 <div id="upload-to-github" class="section level2">

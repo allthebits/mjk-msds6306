@@ -13,3 +13,6 @@
     source('code/q01_d.R')
     
     source('code/q02_a.R')
+    source('code/q02_b.R')
+    source('code/q02_c.R')
+    
