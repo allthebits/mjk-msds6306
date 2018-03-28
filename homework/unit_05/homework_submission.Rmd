@@ -76,6 +76,7 @@ output: html_document
     final <- merge(y2016, y2015, all=FALSE, by=c("FirstName","Gender"))
     xcnt <- sum(is.na(final$CountWithThisName.x))
     ycnt <- sum(is.na(final$CountWithThisName.y))
+    ycnt <- sum(is.na(final$CountWithThisName.y))
     sprintf("Validation after merge: Count of NA for 2016: %d, Count of NA for 2015", xcnt, ycnt)
     ```
 1. Data Summary
