@@ -14,7 +14,8 @@ rm(list=ls())
 library(knitr)
 library(ggplot2)
 library(dplyr)
-library(fpp)
+library(fpp2)
+library(MuMIn)
 
 dbxroot <- "https://dl.dropboxusercontent.com/spa/afq05cp80hp4ezn/downloads/public/msds-data/"
 ```
@@ -30,6 +31,7 @@ read_chunk('code/q02_a.R')
 read_chunk('code/q02_b.R')
 read_chunk('code/q02_c.R')
 read_chunk('code/q02_d.R')
+read_chunk('code/q03_a.R')
 
 ```
 
@@ -47,42 +49,51 @@ read_chunk('code/q02_d.R')
 <<q01_c>>
 ```
 
-## 2) Cleaning and New Features
-### (a.) 
+## 2) Temperature Data
+### (a.) Using the maxtemp dataset granted by loading fpp2, there are maximum annual temperature data in Celsius. For more information, use help(maxtemp). To see what you’re looking at, execute the command in ‘Examples’ in the help document.
 ```{r}
 <<q02_a>>
 ```
-#### For every forw in the statesize Dataframe, all rows from the original Filtered Dataframe from #1c are included.  Because statesize has 50 rows, we have exactly `50*SizeOf(mh2015_filtered)` number of rows in the merged dataset.  My guess is that while both DF's have the State Data, because they are Factors and not character data, even though from a character data perspective there is a match, they are NOT a match because the Factors are Unique.
-### (b.) Correct the data mismatch between the dataframe in #1c and the statesize dataframe, and merge.
+
+### (b.) We are only concerned with information after 1990. Please eliminate unwanted information or subset information we care about.
 ```{r}
 <<q02_b>>
 ```
-### (c.) Calculate a new variable in your combined data.frame() which indicates the VA hospitals per thousand square miles.
+
+### (c.) Melbourne Prediction
+
+#### Utilize SES to predict the next five years of maximum temperatures in Melbourne. Plot this information, including the prior information and the forecast. Add the predicted value line across 1990-present as a separate line, preferably blue. 
+
+#### So, to review, you should have: (all on one axis.)
+
+* your fit
+* the predicted value line overlaying it (1990-present) in blue
+* and a forecast 2017 through 2021
+* ALSO:  Find the AICc of this fitted model. You will use that information later.
+
 ```{r}
 <<q02_c>>
 ```
 
-### (d.) GGPlot with VA's per 1000 Square Miles by Region, sorted by Descending Bar Plot
-#### I ran out of time trying to figure out how to do a legend.
+### (d.) Now use a damped Holt’s linear trend to also predict out five years. Make sure initial=“optimal.” As above, create a similar plot to 1C, but use the Holt fit instead.
 ```{r}
 <<q02_d>>
 ```
 
-### (e.1) What patterns do you see? 
-#### A large portion of the total hospitals are contained in a few states.
+### (e) Compare the AICc of the ses() and holt() models. Which model is better here?
 
-### (e.2) By this metric, is there any region that seems relatively high for VA medical centers per thousand square miles?
-#### The eastern seaboard seems to be high in the count of hospitals.
+Based on the info from [Wikipedia on AICc](https://en.wikipedia.org/wiki/Akaike_information_criterion), the one with the smaller value is the better fitting model.  Thus, the SES model is the better model.
 
-### (e.3) How about low? 
-#### Total count per thousand is small west of a certain point, with the exception of a couple states.
 
-### (e.4) Given these data, what advice might you give your boss before you start modeling (and why)?
-#### There are some states that seem to be low, and I would double check the aggregate data to make sure the counts are correct.  or possibly make sure responses were not lost, or not reported.  If data is getting dropped, this would bias the model.
+## 2) The Wands Choose the Wizard
+### (a.) Utilize the dygraphs library. Read in both Unit11TimeSeries_Ollivander and _Gregorovitch.csv as two different data frames. They do not have headers, so make sure you account for that. This is a time series of Wands sold over years.
+```{r}
+<<q03_a>>
+```
 
 
 ## [Upload to GitHub](https://github.com/allthebits/mjk-msds6306)
-- Files for this homework (Unit 10) are in this folder: **homework/unit_10**
-- [RMD File](https://github.com/allthebits/mjk-msds6306/blob/master/homework/unit_10/homework_submission.Rmd)
-- [HTML Version of Assignment 10](http://htmlpreview.github.io/?https://raw.githubusercontent.com/allthebits/mjk-msds6306/master/homework/unit_10/homework_submission.html)  -  It's the same exact content as this page, except served from GitHub
+- Files for this homework (Unit 10) are in this folder: **homework/unit_11**
+- [RMD File](https://github.com/allthebits/mjk-msds6306/blob/master/homework/unit_11/homework_submission.Rmd)
+- [HTML Version of Assignment 11](http://htmlpreview.github.io/?https://raw.githubusercontent.com/allthebits/mjk-msds6306/master/homework/unit_11/homework_submission.html)  -  It's the same exact content as this page, except served from GitHub
 
