@@ -46,6 +46,8 @@ dygraph(xts_temp, main="Number of Wands Sold by Year", group="OllNumSold") %>%
     dySeries("GregNumSold", label = "Gregorovitch", color="DarkGreen") %>% 
     dySeries("OllNumSold", label = "Ollivander", color="Orange") %>%
     dyAxis("y", valueRange = c(0, ymax)) %>%
-    dyOptions(stackedGraph = FALSE, fillGraph=FALSE, fillAlpha = 0.0) %>%
+    dyShading(from = "1995-1-1", to = "1999-1-1") %>%
+    dyHighlight(highlightCircleSize = 5, highlightSeriesBackgroundAlpha = 0.2, hideOnMouseOut = FALSE) %>%
+    dyOptions(stackedGraph = FALSE, fillGraph=FALSE, fillAlpha = 0.0, drawPoints=TRUE, pointSize=3) %>%
     dyRangeSelector(height = 20, dateWindow = c(dateMin, dateMax))
     
